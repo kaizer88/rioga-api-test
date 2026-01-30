@@ -4,7 +4,7 @@ app = FastAPI()
 
 @app.get("/api/hello")
 def hello_world():
-    return {"message": "Hello, World!"}
+    return {"message": "Hello,  fastWorld!"}
 
 if __name__ == "__main__":
     import uvicorn
