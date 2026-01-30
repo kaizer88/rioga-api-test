@@ -1,29 +1,14 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
-import json
+from flask import Flask
 
-class SimpleAPI(BaseHTTPRequestHandler):
-    def do_GET(self):
-        if self.path == "/health":
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json")
-            self.end_headers()
-            self.wfile.write(json.dumps({"status": "ok"}).encode())
+app = Flask(__name__)
 
-        else:
-            self.send_response(404)
-            self.end_headers()
+@app.route('/')
+def hello_world():
+    return {'message': 'Hello, World!'}
 
-    def do_POST(self):
-        if self.path == "/echo":
-            content_length = int(self.headers.get("Content-Length", 0))
-            body = self.rfile.read(content_length)
-            data = json.loads(body)
+@app.route('/api/hello')
+def api_hello():
+    return {'message': 'Hello from API'}
 
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json")
-            self.end_headers()
-            self.wfile.write(json.dumps(data).encode())
-
-server = HTTPServer(("0.0.0.0", 8000), SimpleAPI)
-print("Server running on port 8000")
-server.serve_forever()
+if __name__ == '__main__':
+    app.run(debug=True)
